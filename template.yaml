@@ -1,0 +1,27 @@
+Transform: AWS::Serverless-2016-10-31
+AWSTemplateFormatVersion: '2010-09-09'
+Description: An AWS Serverless Application that schedules a Lambda function every day at 6 AM.
+
+Resources:
+  MyLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs18.x # Ensure this matches your Lambda's runtime
+      CodeUri: parra-aqua
+      Environment:
+        Variables:
+          TWILIO_ACCOUNT_SID: ACd3397e12d99f9033c0fc7a48bfaed93b
+          TWILIO_AUTH_TOKEN: a192b030e13994afe4a7e273993677a6
+      Events:
+        SixAMSchedule:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 */6 * * ? *) # At minute 0 past every 6th hour
+            Enabled: True
+        
+
+Outputs:
+  MyLambdaFunctionArn:
+    Description: "ARN of the scheduled Lambda function"
+    Value: !GetAtt MyLambdaFunction.Arn
