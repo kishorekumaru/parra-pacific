@@ -22,7 +22,7 @@ module.exports.handler = async (event, context) => {
             "vacancies": 1,
             "ageLimitId": 5,
             "activityCategoryIds": [3],
-            "activityUserLevelIds": [16],
+            "activityUserLevelIds": [17],
             "daysOfWeek": [],
             "semesterIds": [],
             "showSingleLesson": null,
@@ -71,34 +71,34 @@ module.exports.handler = async (event, context) => {
 
 
         
-    //     const results = await Promise.allSettled(filteredData.map(data => fetchData(`${bookingURL}${data.id}`, {
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Accept': 'application/json',
-    //             'Cookie': cookies
-    //         }
-    //     })));
+        const results = await Promise.allSettled(filteredData.map(data => fetchData(`${bookingURL}${data.id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Cookie': cookies
+            }
+        })));
 
-    //    const msg =  results.map(result => {
-    //         if ( results.value?.data?.Users[0].Status === 'Bookable') {
-    //             return `On ${result.value.data.Name } - Trainer: ${result.value.data.Trainer}`;
-    //         } else {
-    //             return null;
-    //         }
-    //     }).filter(item => item !== null).join(' \n ');
+       const msg =  results.map(result => {
+            if ( results.value?.data?.Users[0].Status === 'Bookable') {
+                return `On ${result.value.data.Name } - Trainer: ${result.value.data.Trainer}`;
+            } else {
+                return null;
+            }
+        }).filter(item => item !== null).join(' \n ');
 
-    //     if(msg.trim() === '') {
-    //         console.log('No classes available');
-    //         return { statusCode: 200, body: JSON.stringify({ message: 'No classes available' }) };
-    //     }
+        if(msg.trim() === '') {
+            console.log('No classes available');
+            return { statusCode: 200, body: JSON.stringify({ message: 'No classes available' }) };
+        }
 
-        const msg = filteredData.map(item => item.msg).join(' \n ');
+       // const msg = filteredData.map(item => item.msg).join(' \n ');
 
-        await client.messages.create({
-            body: 'Parramatta Aquatic classes for JellyFish:' + msg,
-            to: '+61406104350',
-            from: '+14243254033'
-        });
+        // await client.messages.create({
+        //     body: 'Parramatta Aquatic classes for SeaHorse:' + msg,
+        //     to: '+61406104350',
+        //     from: '+14243254033'
+        // });
         console.log('Messages sent successfully');
         return { statusCode: 200, body: JSON.stringify({ message: 'Messages sent successfully' }) };
     
